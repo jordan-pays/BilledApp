@@ -4,15 +4,17 @@
 
 import {screen, waitFor} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
+import Bills from  "../containers/Bills"
 import { bills } from "../fixtures/bills.js"
-import { ROUTES_PATH} from "../constants/routes.js";
+import {ROUTES, ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
+import userEvent from '@testing-library/user-event'
 
 import router from "../app/Router.js";
 
 describe("Given I am connected as an employee", () => {
-  describe("When I am on Bills Page", () => {
-    test("Then bill icon in vertical layout should be highlighted", async () => {
+  describe("", () => {
+    test("Then billWhen I am on Bills Page icon in vertical layout should be highlighted", async () => {
 
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
@@ -34,6 +36,24 @@ describe("Given I am connected as an employee", () => {
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
+    })
+  })
+
+  describe('When I am on Bills Page and I click on the icon eye', () => {
+    test('A modal should open', async() => {
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+      document.body.innerHTML = BillsUI({ data:[bills[0]] })
+      const store=null
+      new Bills({
+        document, onNavigate, store, localStorage: window.localStorage
+      })
+      const eye = screen.getByTestId('icon-eye')
+      userEvent.click(eye)
+      const modale = screen.getByTestId('modaleFile')
+      expect(modale).toBeTruthy()
     })
   })
 })
