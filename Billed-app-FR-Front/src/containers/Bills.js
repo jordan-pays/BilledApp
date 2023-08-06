@@ -13,6 +13,7 @@ export default class {
     if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconEye(icon))
     })
+  
     new Logout({ document, localStorage, onNavigate })
   }
 
@@ -25,6 +26,9 @@ export default class {
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
     $('#modaleFile').find(".modal-body").html(`<div data-testid="modaleFile" style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
     $('#modaleFile').show()
+    document?.getElementById('close_modal')?.addEventListener("click",()=>{
+      $('#modaleFile').hide()
+    })
   }
 
   getBills = () => {
